@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VForce Flow — build &amp; run automations</title>
+<meta name="description" content="VForce Flow — design an automation visually and run it in seconds. Connect anything, automate the workflow, own the stack." />
+<style>
+  :root{
+    --bg:#0a0d14; --panel:#111624; --panel2:#0e1320; --line:#222a3c;
+    --ink:#e8ecf4; --muted:#8b94a8;
+    --trigger:#38bdf8; --action:#a78bfa; --decision:#fb7185; --notify:#34d399;
+    --run:#f5b301; --ok:#34d399;
+    --shadow:0 14px 40px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:radial-gradient(1200px 600px at 70% -10%, #16203a 0%, var(--bg) 55%);
+    color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;
+    -webkit-font-smoothing:antialiased; display:flex; align-items:center; justify-content:center; min-height:100%;
+    padding:24px;
+  }
+  .app{ width:min(1180px,100%); }
+  /* top bar */
+  .bar{ display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:-.01em; font-size:1.15rem; }
+  .brand .mark{ width:26px;height:26px;border-radius:8px;
+    background:conic-gradient(from 200deg,#38bdf8,#a78bfa,#fb7185,#f5b301,#34d399,#38bdf8);
+    box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 6px 16px rgba(56,189,248,.35); }
+  .brand small{ color:var(--muted); font-weight:500; }
+  .bar .spacer{ flex:1; }
+  .pill{ font-size:.72rem; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px; background:var(--panel2); }
+  .btn{ font:inherit; font-size:.84rem; font-weight:600; color:#10131c; background:var(--run);
+    border:0; border-radius:9px; padding:8px 16px; display:inline-flex; align-items:center; gap:7px; cursor:default;
+    box-shadow:0 6px 16px rgba(245,179,1,.3); transition:transform .12s ease, filter .12s ease, box-shadow .12s ease; }
+  .btn.press{ transform:translateY(1px) scale(.97); filter:brightness(.95); }
+  .btn .dot{ width:8px;height:8px;border-radius:50%;background:#10131c; }
+  /* layout */
+  .wrap{ display:grid; grid-template-columns:1fr 320px; gap:14px; }
+  @media (max-width:880px){ .wrap{ grid-template-columns:1fr; } }
+  .canvasCard,.console{ background:linear-gradient(180deg,var(--panel),var(--panel2));
+    border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); }
+  .canvasCard{ position:relative; overflow:hidden; }
+  .canvasHead{ display:flex; align-items:center; gap:8px; padding:11px 14px; border-bottom:1px solid var(--line); color:var(--muted); font-size:.78rem; }
+  .canvasHead .tab{ color:var(--ink); background:#1a2133; border:1px solid var(--line); border-radius:7px; padding:3px 9px; }
+  .stage{ position:relative; height:524px; background-image:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 0);
+    background-size:26px 26px; }
+  .stage.run{ box-shadow:inset 0 0 120px rgba(245,179,1,.06); }
+  svg.edges{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+  .edge{ fill:none; stroke:var(--line); stroke-width:2.5; stroke-linecap:round;
+    stroke-dasharray:var(--len); stroke-dashoffset:var(--len); transition:stroke-dashoffset .55s ease, stroke .3s ease; }
+  .edge.drawn{ stroke-dashoffset:0; }
+  .edge.flow{ stroke:var(--run); stroke-dasharray:9 9; stroke-dashoffset:0; animation:march .6s linear infinite; filter:drop-shadow(0 0 5px rgba(245,179,1,.6)); }
+  .edge.donee{ stroke:var(--ok); stroke-dasharray:none; animation:none; }
+  @keyframes march{ to{ stroke-dashoffset:-180; } }
+  .elbl{ position:absolute; font-size:.66rem; font-weight:700; color:var(--muted); background:var(--panel2);
+    border:1px solid var(--line); border-radius:6px; padding:1px 6px; opacity:0; transition:opacity .4s ease; }
+  .elbl.show{ opacity:1; }
+  /* node */
+  .node{ position:absolute; width:172px; padding:11px 13px; border-radius:13px;
+    background:#161c2c; border:1px solid #2a3346; box-shadow:0 8px 22px rgba(0,0,0,.45);
+    opacity:0; transform:translateY(10px) scale(.9); transition:opacity .35s ease, transform .35s cubic-bezier(.2,.9,.3,1.3), box-shadow .25s, border-color .25s; }
+  .node.show{ opacity:1; transform:translateY(0) scale(1); }
+  .node.active{ border-color:var(--run); box-shadow:0 0 0 1px var(--run), 0 0 26px rgba(245,179,1,.45); }
+  .node.done{ border-color:var(--ok); box-shadow:0 0 0 1px rgba(52,211,153,.5); }
+  .node.dim{ opacity:.4; filter:saturate(.6); }
+  .node .row{ display:flex; align-items:center; gap:9px; }
+  .node .ico{ width:30px;height:30px;border-radius:8px; display:grid;place-items:center; font-size:15px; flex:none;
+    background:rgba(255,255,255,.05); }
+  .node .ttl{ font-size:.84rem; font-weight:650; line-height:1.15; }
+  .node .sub{ font-size:.7rem; color:var(--muted); margin-top:2px; }
+  .node .badge{ position:absolute; top:-9px; right:10px; font-size:.6rem; font-weight:700; letter-spacing:.04em;
+    text-transform:uppercase; padding:2px 7px; border-radius:999px; color:#0a0d14; opacity:.95; }
+  .node .check{ position:absolute; top:-10px; left:-10px; width:22px;height:22px;border-radius:50%;
+    background:var(--ok); color:#06210f; display:grid;place-items:center; font-size:13px; font-weight:900;
+    transform:scale(0); transition:transform .3s cubic-bezier(.2,.9,.3,1.6); box-shadow:0 4px 10px rgba(52,211,153,.5); }
+  .node.done .check{ transform:scale(1); }
+  .t-trigger .ico{ color:var(--trigger) } .t-trigger .badge{ background:var(--trigger) }
+  .t-action  .ico{ color:var(--action)  } .t-action  .badge{ background:var(--action)  }
+  .t-decision .ico{ color:var(--decision) } .t-decision .badge{ background:var(--decision) }
+  .t-notify  .ico{ color:var(--notify)  } .t-notify  .badge{ background:var(--notify)  }
+  /* palette flyout (build phase flourish) */
+  .palette{ position:absolute; left:14px; top:14px; display:flex; gap:7px; opacity:0; transform:translateY(-6px); transition:.4s ease; }
+  .palette.show{ opacity:1; transform:none; }
+  .chip{ font-size:.7rem; color:var(--muted); border:1px solid var(--line); background:var(--panel2); border-radius:8px; padding:5px 9px; }
+  /* console */
+  .console{ display:flex; flex-direction:column; min-height:200px; }
+  .console h3{ margin:0; padding:12px 14px; font-size:.78rem; color:var(--muted); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:8px; font-weight:600; }
+  .console h3 .live{ width:8px;height:8px;border-radius:50%; background:#3a455c; }
+  .console.running h3 .live{ background:var(--run); box-shadow:0 0 8px var(--run); animation:pulse 1s infinite; }
+  @keyframes pulse{ 50%{opacity:.4} }
+  .log{ padding:10px 14px; font:12.5px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace; color:#c7d0e0; flex:1; overflow:hidden; }
+  .log .ln{ opacity:0; transform:translateX(-6px); transition:opacity .25s, transform .25s; white-space:nowrap; }
+  .log .ln.show{ opacity:1; transform:none; }
+  .log .ln .ok{ color:var(--ok) } .log .ln .run{ color:var(--run) } .log .ln .mut{ color:var(--muted) }
+  .result{ margin:0 14px 14px; border:1px solid rgba(52,211,153,.35); background:rgba(52,211,153,.08);
+    color:var(--ok); border-radius:10px; padding:9px 12px; font-size:.8rem; font-weight:650; opacity:0; transform:translateY(6px); transition:.4s ease; }
+  .result.show{ opacity:1; transform:none; }
+  .foot{ margin-top:12px; color:var(--muted); font-size:.78rem; display:flex; align-items:center; gap:8px; }
+  .foot b{ color:var(--ink); font-weight:650; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="bar">
+    <div class="brand"><span class="mark"></span> VForce&nbsp;Flow <small>&nbsp;· visual automation</small></div>
+    <span class="spacer"></span>
+    <span class="pill" id="phase">Designing…</span>
+    <button class="btn" id="runBtn"><span class="dot"></span> Run</button>
+  </div>
+
+  <div class="wrap">
+    <div class="canvasCard">
+      <div class="canvasHead"><span class="tab">order-automation</span><span>· draft</span></div>
+      <div class="stage" id="stage">
+        <div class="palette" id="palette">
+          <span class="chip">⊞ Trigger</span><span class="chip">⚙ Action</span><span class="chip">◆ Logic</span><span class="chip">✉ Notify</span>
+        </div>
+        <svg class="edges" id="edges" viewBox="0 0 1118 524" preserveAspectRatio="none"></svg>
+        <!-- nodes injected by JS -->
+      </div>
+    </div>
+
+    <div class="console" id="console">
+      <h3><span class="live"></span> Run output</h3>
+      <div class="log" id="log"></div>
+      <div class="result" id="result">● Completed in 0.9s · 5 steps</div>
+    </div>
+  </div>
+
+  <div class="foot"><b>Connect anything. Automate the workflow. Own the stack.</b> &nbsp;— design it, click Run, done.</div>
+</div>
+
+<script>
+const NODES = [
+  {id:'n1', t:'trigger', x:30,  y:230, ico:'⚡', badge:'Trigger',  ttl:'New order',           sub:'webhook · order.created'},
+  {id:'n2', t:'action',  x:250, y:230, ico:'⚙', badge:'Action',   ttl:'Enrich customer',     sub:'CRM lookup'},
+  {id:'n3', t:'decision',x:470, y:230, ico:'◆', badge:'Decision', ttl:'VIP order?',          sub:'value ≥ $5k'},
+  {id:'n4', t:'action',  x:700, y:118, ico:'★', badge:'Action',   ttl:'Priority fulfillment',sub:'expedite'},
+  {id:'n5', t:'action',  x:700, y:340, ico:'▦', badge:'Action',   ttl:'Standard queue',      sub:'batch'},
+  {id:'n6', t:'notify',  x:920, y:230, ico:'✉', badge:'Notify',   ttl:'Send confirmation',   sub:'email · ops'},
+];
+// edges: [from,to, svgPath, labelText,labelX,labelY]
+const EDGES = [
+  ['n1','n2','M198,262 L250,262', '', 0,0],
+  ['n2','n3','M418,262 L470,262', '', 0,0],
+  ['n3','n4','M638,262 C672,262 672,150 700,150', '✓ yes', 648,176],
+  ['n3','n5','M638,262 C672,262 672,372 700,372', '✗ no',  648,330],
+  ['n4','n6','M868,150 C896,150 896,262 920,262', '', 0,0],
+  ['n5','n6','M868,372 C896,372 896,262 920,262', '', 0,0],
+];
+const RUN_PATH = ['n1','n1n2','n2','n2n3','n3','n3n4','n4','n4n6','n6']; // nodes + edge keys
+
+const stage=document.getElementById('stage'), edgesSvg=document.getElementById('edges'),
+      log=document.getElementById('log'), result=document.getElementById('result'),
+      phase=document.getElementById('phase'), runBtn=document.getElementById('runBtn'),
+      consoleEl=document.getElementById('console'), palette=document.getElementById('palette');
+const nodeEls={}, edgeEls={}, lblEls={};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+function buildDom(){
+  // edges
+  EDGES.forEach(([f,t,d,lbl,lx,ly])=>{
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',d); p.setAttribute('class','edge');
+    edgesSvg.appendChild(p);
+    const len=p.getTotalLength(); p.style.setProperty('--len',len);
+    edgeEls[f+t]=p;
+    if(lbl){ const e=document.createElement('div'); e.className='elbl'; e.textContent=lbl;
+      e.style.left=(lx/1118*100)+'%'; e.style.top=(ly/524*100)+'%'; stage.appendChild(e); lblEls[f+t]=e; }
+  });
+  // nodes
+  NODES.forEach(n=>{
+    const el=document.createElement('div'); el.className='node t-'+n.t; el.style.left=n.x+'px'; el.style.top=n.y+'px';
+    el.innerHTML=`<div class="check">✓</div><span class="badge">${n.badge}</span>
+      <div class="row"><div class="ico">${n.ico}</div><div><div class="ttl">${n.ttl}</div><div class="sub">${n.sub}</div></div></div>`;
+    stage.appendChild(el); nodeEls[n.id]=el;
+  });
+}
+function addLog(html,delay){ const d=document.createElement('div'); d.className='ln'; d.innerHTML=html; log.appendChild(d);
+  setTimeout(()=>d.classList.add('show'), delay||20); }
+function reset(){
+  Object.values(nodeEls).forEach(e=>e.className=e.className.replace(/ (show|active|done|dim)/g,''));
+  Object.values(edgeEls).forEach(e=>e.classList.remove('drawn','flow','donee'));
+  Object.values(lblEls).forEach(e=>e.classList.remove('show'));
+  log.innerHTML=''; result.classList.remove('show'); consoleEl.classList.remove('running');
+  stage.classList.remove('run'); palette.classList.remove('show'); runBtn.classList.remove('press');
+}
+
+async function build(){
+  phase.textContent='Designing…';
+  palette.classList.add('show'); await sleep(450);
+  const reveal=async(id)=>{ nodeEls[id].classList.add('show'); await sleep(430); };
+  const draw=async(key,lbl)=>{ edgeEls[key].classList.add('drawn'); if(lbl)lblEls[key].classList.add('show'); await sleep(360); };
+  await reveal('n1');
+  await draw('n1n2'); await reveal('n2');
+  await draw('n2n3'); await reveal('n3');
+  await reveal('n4'); await draw('n3n4',true);
+  await reveal('n5'); await draw('n3n5',true);
+  await draw('n4n6'); await reveal('n6'); await draw('n5n6');
+  await sleep(500);
+}
+
+async function run(){
+  phase.textContent='Running'; consoleEl.classList.add('running'); stage.classList.add('run');
+  runBtn.classList.add('press'); await sleep(160); runBtn.classList.remove('press');
+  addLog('<span class="run">▶</span> Run started · order #4827',0); await sleep(500);
+
+  const fire=async(id,line)=>{ nodeEls[id].classList.add('active'); await sleep(620);
+    nodeEls[id].classList.remove('active'); nodeEls[id].classList.add('done'); addLog(line); await sleep(260); };
+  const flow=async(key)=>{ edgeEls[key].classList.add('flow'); await sleep(520); edgeEls[key].classList.add('donee'); };
+
+  await fire('n1','<span class="ok">✓</span> Trigger — order received <span class="mut">($6,240)</span>');
+  await flow('n1n2');
+  await fire('n2','<span class="ok">✓</span> Enrich customer — <b>Acme Corp</b>');
+  await flow('n2n3');
+  await fire('n3','<span class="ok">✓</span> Decision — VIP → <span class="run">priority</span>');
+  nodeEls['n5'].classList.add('dim');                          // untaken branch dims
+  await flow('n3n4');
+  await fire('n4','<span class="ok">✓</span> Priority fulfillment queued');
+  await flow('n4n6');
+  await fire('n6','<span class="ok">✓</span> Confirmation sent → ops@acme.com');
+  await sleep(150);
+  result.classList.add('show'); phase.textContent='Completed'; consoleEl.classList.remove('running');
+  await sleep(2600);
+}
+
+async function loop(){ while(true){ reset(); await sleep(700); await build(); await sleep(550); await run(); await sleep(900); } }
+buildDom(); loop();
+</script>
+</body>
+</html>

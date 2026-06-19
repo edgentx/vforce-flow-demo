@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VForce Flow — design an automation, click Run</title>
+<meta name="description" content="VForce Flow — build a workflow visually and run it in seconds. Connect anything, automate the workflow, own the stack." />
+<meta property="og:title" content="VForce Flow" />
+<meta property="og:description" content="Design an automation visually — then click Run. Connect anything. Own the stack." />
+<meta property="og:image" content="poster.jpg" />
+<meta property="og:type" content="website" />
+<style>
+  :root{ --bg:#0a0d14; --ink:#e8ecf4; --muted:#93a0b8; --line:#222a3c; --accent:#f5b301; }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%}
+  body{ background:radial-gradient(1200px 640px at 72% -8%, #16203a 0%, var(--bg) 56%);
+    color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:34px 22px 60px; }
+  header{ display:flex; align-items:center; gap:11px; margin-bottom:34px; }
+  .mark{ width:30px;height:30px;border-radius:9px;
+    background:conic-gradient(from 200deg,#38bdf8,#a78bfa,#fb7185,#f5b301,#34d399,#38bdf8);
+    box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 8px 18px rgba(56,189,248,.35); }
+  .brand{ font-weight:750; font-size:1.2rem; letter-spacing:-.01em; }
+  .brand span{ color:var(--muted); font-weight:500; }
+  h1{ font-size:clamp(1.8rem,4.2vw,3rem); line-height:1.05; letter-spacing:-.025em; margin:.1em 0 .35em;
+    background:linear-gradient(180deg,#fff,#aeb9cf); -webkit-background-clip:text; background-clip:text; color:transparent; max-width:14ch; }
+  .lede{ color:var(--muted); font-size:clamp(1rem,2vw,1.18rem); max-width:56ch; margin:0 0 26px; line-height:1.5; }
+  .frame{ position:relative; border:1px solid var(--line); border-radius:18px; overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.55); background:#0e1320; }
+  .frame::before{ content:""; position:absolute; inset:0; border-radius:18px; pointer-events:none;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06); }
+  .frame .chrome{ display:flex; align-items:center; gap:7px; padding:10px 14px; border-bottom:1px solid var(--line); }
+  .frame .chrome i{ width:11px;height:11px;border-radius:50%; background:#2b3346; display:block; }
+  .frame .chrome .ttl{ margin-left:10px; color:var(--muted); font-size:.78rem; }
+  video{ display:block; width:100%; height:auto; background:#0a0d14; }
+  .cta{ display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; align-items:center; }
+  .btn{ font:inherit; font-weight:650; font-size:.95rem; text-decoration:none; border-radius:11px; padding:12px 20px; display:inline-flex; align-items:center; gap:8px; transition:transform .12s ease, filter .12s ease; }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn.primary{ background:var(--accent); color:#10131c; box-shadow:0 10px 22px rgba(245,179,1,.3); }
+  .btn.ghost{ color:var(--ink); border:1px solid var(--line); background:rgba(255,255,255,.02); }
+  .props{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:40px; }
+  @media (max-width:720px){ .props{ grid-template-columns:1fr; } }
+  .prop{ border:1px solid var(--line); border-radius:14px; padding:16px 16px; background:rgba(255,255,255,.015); }
+  .prop b{ display:block; font-size:.98rem; margin-bottom:5px; }
+  .prop p{ margin:0; color:var(--muted); font-size:.86rem; line-height:1.5; }
+  footer{ margin-top:46px; color:var(--muted); font-size:.82rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><span class="mark"></span><span class="brand">VForce&nbsp;Flow <span>· visual automation</span></span></header>
+
+  <h1>Design it. Click&nbsp;Run.</h1>
+  <p class="lede">Build an automation the way you'd sketch it on a whiteboard — drop in a trigger, wire up the steps, branch on a decision — then run it and watch it execute, live. No glue code. No platform tax.</p>
+
+  <div class="frame">
+    <div class="chrome"><i></i><i></i><i></i><span class="ttl">order-automation — build &amp; run</span></div>
+    <video src="vforce-flow.mp4" poster="poster.jpg" autoplay muted loop playsinline></video>
+  </div>
+
+  <div class="cta">
+    <a class="btn primary" href="demo.html">▶ Try the interactive demo</a>
+    <a class="btn ghost" href="vforce-flow.mp4" download>Download the clip</a>
+  </div>
+
+  <div class="props">
+    <div class="prop"><b>Connect anything</b><p>APIs, databases, queues, SaaS, files — one universal connector plus a growing catalog. If it speaks HTTP, it's in.</p></div>
+    <div class="prop"><b>Automate the workflow</b><p>Triggers, actions, branching, loops, approvals, retries. Visual to build, durable when it runs.</p></div>
+    <div class="prop"><b>Own the stack</b><p>Runs in your cloud or on‑prem. Role‑based access and a full audit trail. Your data never leaves your environment.</p></div>
+  </div>
+
+  <footer>VForce Flow — connect anything, automate the workflow, own the stack.</footer>
+</div>
+</body>
+</html>
