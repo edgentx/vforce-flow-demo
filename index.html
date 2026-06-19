@@ -3,81 +3,139 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>VForce Flow — design an automation, click Run</title>
-<meta name="description" content="VForce Flow — build a workflow visually and run it in seconds. Connect anything, automate the workflow, own the stack." />
-<meta property="og:title" content="VForce Flow" />
-<meta property="og:description" content="Design an automation visually — then click Run. Connect anything. Own the stack." />
+<title>VForce360 — automate everything, remember everything</title>
+<meta name="description" content="VForce360 by Edgent — VForce Flow automates your work visually; VForce Lakehouse turns your data and documents into a governed brain. One platform. Own the stack." />
+<meta property="og:title" content="VForce360 — automate everything, remember everything" />
+<meta property="og:description" content="Flow orchestrates. Lakehouse remembers. One data + AI automation platform by Edgent." />
 <meta property="og:image" content="poster.jpg" />
 <meta property="og:type" content="website" />
 <style>
-  :root{ --bg:#0a0d14; --ink:#e8ecf4; --muted:#93a0b8; --line:#222a3c; --accent:#f5b301; }
+  :root{
+    --bg:#05070d; --panel:#0b1020; --ink:#eaf0ff; --muted:#8ea2c8; --line:#1b2540;
+    --flow:#f5b301; --flow2:#fb7185; --lake:#34d399; --lake2:#38bdf8;
+  }
   *{box-sizing:border-box}
   html,body{margin:0;min-height:100%}
-  body{ background:radial-gradient(1200px 640px at 72% -8%, #16203a 0%, var(--bg) 56%);
-    color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;
-    -webkit-font-smoothing:antialiased; }
-  .wrap{ max-width:1080px; margin:0 auto; padding:34px 22px 60px; }
-  header{ display:flex; align-items:center; gap:11px; margin-bottom:34px; }
-  .mark{ width:30px;height:30px;border-radius:9px;
-    background:conic-gradient(from 200deg,#38bdf8,#a78bfa,#fb7185,#f5b301,#34d399,#38bdf8);
-    box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 8px 18px rgba(56,189,248,.35); }
-  .brand{ font-weight:750; font-size:1.2rem; letter-spacing:-.01em; }
-  .brand span{ color:var(--muted); font-weight:500; }
-  h1{ font-size:clamp(1.8rem,4.2vw,3rem); line-height:1.05; letter-spacing:-.025em; margin:.1em 0 .35em;
-    background:linear-gradient(180deg,#fff,#aeb9cf); -webkit-background-clip:text; background-clip:text; color:transparent; max-width:14ch; }
-  .lede{ color:var(--muted); font-size:clamp(1rem,2vw,1.18rem); max-width:56ch; margin:0 0 26px; line-height:1.5; }
-  .frame{ position:relative; border:1px solid var(--line); border-radius:18px; overflow:hidden;
-    box-shadow:0 30px 70px rgba(0,0,0,.55); background:#0e1320; }
-  .frame::before{ content:""; position:absolute; inset:0; border-radius:18px; pointer-events:none;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.06); }
-  .frame .chrome{ display:flex; align-items:center; gap:7px; padding:10px 14px; border-bottom:1px solid var(--line); }
-  .frame .chrome i{ width:11px;height:11px;border-radius:50%; background:#2b3346; display:block; }
-  .frame .chrome .ttl{ margin-left:10px; color:var(--muted); font-size:.78rem; }
-  video{ display:block; width:100%; height:auto; background:#0a0d14; }
-  .realcap{ color:var(--muted); font-size:1rem; margin:26px 0 12px; }
-  .realcap b{ color:var(--ink); }
-  .cta{ display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; align-items:center; }
-  .btn{ font:inherit; font-weight:650; font-size:.95rem; text-decoration:none; border-radius:11px; padding:12px 20px; display:inline-flex; align-items:center; gap:8px; transition:transform .12s ease, filter .12s ease; }
-  .btn:hover{ transform:translateY(-1px); }
-  .btn.primary{ background:var(--accent); color:#10131c; box-shadow:0 10px 22px rgba(245,179,1,.3); }
-  .btn.ghost{ color:var(--ink); border:1px solid var(--line); background:rgba(255,255,255,.02); }
-  .props{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:40px; }
-  @media (max-width:720px){ .props{ grid-template-columns:1fr; } }
-  .prop{ border:1px solid var(--line); border-radius:14px; padding:16px 16px; background:rgba(255,255,255,.015); }
-  .prop b{ display:block; font-size:.98rem; margin-bottom:5px; }
-  .prop .tag{ font-size:.62rem; font-weight:700; letter-spacing:.03em; text-transform:uppercase; vertical-align:middle;
-    margin-left:7px; padding:2px 7px; border-radius:999px; color:#0a0d14; background:linear-gradient(90deg,#f5b301,#fbbf24); }
-  .prop p{ margin:0; color:var(--muted); font-size:.86rem; line-height:1.5; }
-  footer{ margin-top:46px; color:var(--muted); font-size:.82rem; }
+  body{background:
+      radial-gradient(1100px 700px at 15% -10%, #15233f 0%, transparent 55%),
+      radial-gradient(1100px 700px at 90% 8%, #11302a 0%, transparent 50%),
+      var(--bg);
+    color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1120px;margin:0 auto;padding:30px 24px 70px}
+  header{display:flex;align-items:center;gap:11px;margin-bottom:42px}
+  .mark{width:30px;height:30px;border-radius:9px;background:conic-gradient(from 200deg,var(--lake),var(--lake2),#a78bfa,var(--flow),var(--lake));box-shadow:0 0 0 1px rgba(255,255,255,.08),0 10px 22px rgba(56,189,248,.3)}
+  .brand{font-weight:800;font-size:1.22rem;letter-spacing:-.01em}
+  .brand span{color:var(--muted);font-weight:500}
+  .nav{margin-left:auto;display:flex;gap:22px;font-size:.92rem;color:var(--muted)}
+  .nav a{color:var(--muted);text-decoration:none}.nav a:hover{color:var(--ink)}
+  .kick{font-size:.8rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  h1{font-size:clamp(2.1rem,5.4vw,3.7rem);line-height:1.02;letter-spacing:-.03em;margin:.18em 0 .3em;font-weight:850;
+    background:linear-gradient(180deg,#fff,#aebbd8);-webkit-background-clip:text;background-clip:text;color:transparent;max-width:16ch}
+  .lede{color:var(--muted);font-size:clamp(1.05rem,2vw,1.25rem);max-width:60ch;line-height:1.55;margin:0 0 26px}
+  .frame{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#0a0f1d;
+    box-shadow:0 40px 90px rgba(0,0,0,.6)}
+  .frame .chrome{display:flex;align-items:center;gap:7px;padding:11px 15px;border-bottom:1px solid var(--line)}
+  .frame .chrome i{width:11px;height:11px;border-radius:50%;background:#222c45;display:block}
+  .frame .chrome .ttl{margin-left:10px;color:var(--muted);font-size:.78rem}
+  video{display:block;width:100%;height:auto;background:#05070d}
+  .cta{display:flex;flex-wrap:wrap;gap:13px;margin-top:26px;align-items:center}
+  .btn{font:inherit;font-weight:700;font-size:.95rem;text-decoration:none;border-radius:12px;padding:13px 22px;display:inline-flex;align-items:center;gap:8px;transition:transform .12s ease,filter .12s ease}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(90deg,var(--lake),var(--lake2));color:#04130d;box-shadow:0 12px 26px rgba(52,211,153,.28)}
+  .btn.ghost{color:var(--ink);border:1px solid var(--line);background:rgba(255,255,255,.02)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:64px}
+  @media(max-width:760px){.two{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:18px;padding:26px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent)}
+  .card .tag{font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:999px;display:inline-block}
+  .card.flow .tag{background:rgba(245,179,1,.16);color:#ffd97a}
+  .card.lake .tag{background:rgba(52,211,153,.16);color:#9af2c8}
+  .card h3{font-size:1.5rem;letter-spacing:-.02em;margin:.5em 0 .2em}
+  .card.flow h3 span{background:linear-gradient(90deg,var(--flow),var(--flow2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .card.lake h3 span{background:linear-gradient(90deg,var(--lake),var(--lake2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .card p{color:var(--muted);line-height:1.55;margin:.2em 0 1em}
+  .card ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+  .card li{color:#cdd8ef;font-size:.93rem;display:flex;gap:10px;align-items:flex-start}
+  .card li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;margin-top:7px}
+  .card.flow li::before{background:var(--flow)}.card.lake li::before{background:var(--lake)}
+  .together{margin-top:22px;border:1px solid var(--line);border-radius:18px;padding:30px 28px;text-align:center;
+    background:radial-gradient(600px 240px at 50% 0,rgba(56,189,248,.08),transparent)}
+  .together h3{font-size:1.7rem;letter-spacing:-.02em;margin:0 0 .3em}
+  .together p{color:var(--muted);max-width:62ch;margin:0 auto;line-height:1.6}
+  .flowword{background:linear-gradient(90deg,var(--flow),var(--flow2));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+  .lakeword{background:linear-gradient(90deg,var(--lake),var(--lake2));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+  .props{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  @media(max-width:760px){.props{grid-template-columns:1fr}}
+  .prop{border:1px solid var(--line);border-radius:14px;padding:16px;background:rgba(255,255,255,.015)}
+  .prop b{display:block;margin-bottom:4px}.prop p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.5}
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  footer .dot{opacity:.5}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header><span class="mark"></span><span class="brand">VForce&nbsp;Flow <span>· visual automation</span></span></header>
+  <header>
+    <span class="mark"></span>
+    <span class="brand">VForce360 <span>· by Edgent</span></span>
+    <nav class="nav"><a href="#flow">Flow</a><a href="#lakehouse">Lakehouse</a><a href="#together">Together</a></nav>
+  </header>
 
-  <h1>Design it. Click&nbsp;Run.</h1>
-  <p class="lede">Build an automation the way you'd sketch it on a whiteboard — drop in a trigger, wire up the steps, branch on a decision — then run it and watch it execute, live. No glue code. No platform tax.</p>
+  <div class="kick">Data &amp; AI automation · own the stack</div>
+  <h1>Automate everything. Remember everything.</h1>
+  <p class="lede">Two products, one platform. <b style="color:#ffd97a">VForce&nbsp;Flow</b> automates your work the way you'd sketch it on a whiteboard. <b style="color:#9af2c8">VForce&nbsp;Lakehouse</b> turns your data and documents into a governed brain you can query and ask. Together, they run your business.</p>
 
   <div class="frame">
-    <div class="chrome"><i></i><i></i><i></i><span class="ttl">flow.vforce360.ai — signed in · real flow · run succeeded</span></div>
-    <video src="vforce-flow-real.mp4" poster="poster-real.jpg" autoplay muted loop playsinline></video>
+    <div class="chrome"><i></i><i></i><i></i><span class="ttl">VForce360 — how it works</span></div>
+    <video src="vforce-platform.mp4" poster="poster.jpg" autoplay muted loop playsinline></video>
   </div>
 
   <div class="cta">
-    <a class="btn primary" href="https://flow.vforce360.ai">Open the live designer →</a>
-    <a class="btn ghost" href="vforce-flow-real.mp4" download>Download the clip</a>
+    <a class="btn primary" href="#together">See how they fit together →</a>
+    <a class="btn ghost" href="vforce-platform.mp4" download>Download the film</a>
   </div>
 
-  <div class="props">
-    <div class="prop"><b>Connect anything</b><p>APIs, databases, queues, SaaS, files — one universal connector plus a growing catalog. If it speaks HTTP, it's in.</p></div>
-    <div class="prop"><b>Automate the workflow</b><p>Triggers, actions, branching, loops, approvals, retries. Visual to build, durable when it runs.</p></div>
-    <div class="prop"><b>Own the stack</b><p>Runs in your cloud or on‑prem. Role‑based access and a full audit trail. Your data never leaves your environment.</p></div>
-    <div class="prop"><b>VS&nbsp;Code, built in <span class="tag">in‑browser IDE</span></b><p>A full VS&nbsp;Code editor in the browser — edit your flows as code, with a terminal and git, right beside the canvas.</p></div>
-    <div class="prop"><b>Ships as a standalone binary <span class="tag">deploy anywhere</span></b><p>Hand the engine and your flows to any environment as a single self‑contained runtime — nothing to stand up, no phone‑home.</p></div>
-    <div class="prop"><b>AI copilot, built in <span class="tag">Claude</span></b><p>Describe the automation in plain English — Claude drafts and edits the flow for you. You review, then apply.</p></div>
+  <!-- FLOW + LAKEHOUSE -->
+  <div class="two">
+    <div class="card flow" id="flow">
+      <span class="tag">VForce Flow</span>
+      <h3><span>Build it. Click Run.</span></h3>
+      <p>A visual workflow engine. Drop in a trigger, wire up the steps, branch on a decision — then run it and watch it execute, live. Durable when it matters, simple when it doesn't.</p>
+      <ul>
+        <li>Triggers: webhooks, schedules, events, queues</li>
+        <li>Actions, AI agents, drop-in code &amp; compiled functions</li>
+        <li>Branches, loops, approvals, retries, sagas</li>
+        <li>Connect anything — APIs, databases, SaaS, files</li>
+        <li>Runs in your cloud or on-prem, full audit trail</li>
+      </ul>
+    </div>
+    <div class="card lake" id="lakehouse">
+      <span class="tag">VForce Lakehouse</span>
+      <h3><span>Your data &amp; documents, one brain.</span></h3>
+      <p>An open-format lakehouse with intelligent document processing built in. Browse your catalog, query with SQL, and ask in plain English — restricted to the models your org approves.</p>
+      <ul>
+        <li>Open tables (Iceberg) + SQL warehouse (Trino)</li>
+        <li>Documents → OCR, classify, extract → queryable rows</li>
+        <li>Catalog you can browse: columns, lineage, history</li>
+        <li>A governed AI analyst that answers with tables &amp; charts</li>
+        <li>Notebooks, dashboards, and fine-grained access</li>
+      </ul>
+    </div>
   </div>
 
-  <footer>VForce Flow — connect anything, automate the workflow, own the stack.</footer>
+  <!-- TOGETHER -->
+  <div class="together" id="together">
+    <h3><span class="flowword">Flow</span> orchestrates. <span class="lakeword">Lakehouse</span> remembers.</h3>
+    <p>Flow runs the pipelines that move, transform, and enrich your data; Lakehouse stores it, governs it, and makes sense of it. A flow can ingest into the lakehouse; the lakehouse can launch flows as pipelines. One loop — automation that feeds a brain, and a brain that triggers automation.</p>
+    <div class="props">
+      <div class="prop"><b>One identity &amp; tenancy</b><p>Same governed access across both products — your data never leaves your environment.</p></div>
+      <div class="prop"><b>Flows-as-code</b><p>Everything is versioned in git and compiles to a deployable object any CI/CD can ship.</p></div>
+      <div class="prop"><b>Own the stack</b><p>Open formats, no lock-in. Ships as a Helm chart or a docker-compose bundle.</p></div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="mark" style="width:20px;height:20px"></span>
+    <b style="color:var(--ink)">Edgent</b><span class="dot">·</span><span>VForce360 — automate everything, remember everything.</span>
+  </footer>
 </div>
 </body>
 </html>
