@@ -43,6 +43,8 @@
   @media (max-width:720px){ .props{ grid-template-columns:1fr; } }
   .prop{ border:1px solid var(--line); border-radius:14px; padding:16px 16px; background:rgba(255,255,255,.015); }
   .prop b{ display:block; font-size:.98rem; margin-bottom:5px; }
+  .prop .tag{ font-size:.62rem; font-weight:700; letter-spacing:.03em; text-transform:uppercase; vertical-align:middle;
+    margin-left:7px; padding:2px 7px; border-radius:999px; color:#0a0d14; background:linear-gradient(90deg,#f5b301,#fbbf24); }
   .prop p{ margin:0; color:var(--muted); font-size:.86rem; line-height:1.5; }
   footer{ margin-top:46px; color:var(--muted); font-size:.82rem; }
 </style>
@@ -60,14 +62,17 @@
   </div>
 
   <div class="cta">
-    <a class="btn primary" href="demo.html">▶ Try the interactive demo</a>
-    <a class="btn ghost" href="vforce-flow.mp4" download>Download the clip</a>
+    <a class="btn primary" href="https://flow.vforce360.ai">Open the live designer →</a>
+    <a class="btn ghost" href="demo.html">▶ Watch the interactive demo</a>
   </div>
 
   <div class="props">
     <div class="prop"><b>Connect anything</b><p>APIs, databases, queues, SaaS, files — one universal connector plus a growing catalog. If it speaks HTTP, it's in.</p></div>
     <div class="prop"><b>Automate the workflow</b><p>Triggers, actions, branching, loops, approvals, retries. Visual to build, durable when it runs.</p></div>
     <div class="prop"><b>Own the stack</b><p>Runs in your cloud or on‑prem. Role‑based access and a full audit trail. Your data never leaves your environment.</p></div>
+    <div class="prop"><b>VS&nbsp;Code, built in <span class="tag">in‑browser IDE</span></b><p>A full VS&nbsp;Code editor in the browser — edit your flows as code, with a terminal and git, right beside the canvas.</p></div>
+    <div class="prop"><b>Ships as a standalone binary <span class="tag">deploy anywhere</span></b><p>Hand the engine and your flows to any environment as a single self‑contained runtime — nothing to stand up, no phone‑home.</p></div>
+    <div class="prop"><b>AI copilot, built in <span class="tag">Claude</span></b><p>Describe the automation in plain English — Claude drafts and edits the flow for you. You review, then apply.</p></div>
   </div>
 
   <footer>VForce Flow — connect anything, automate the workflow, own the stack.</footer>
